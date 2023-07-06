@@ -9,18 +9,62 @@
 // getEmailDomain("t.mellink@novi.nl") geeft novi.nl
 // getEmailDomain("a.wiersma@outlook.com") geeft outlook.com
 
+function getEmailDomain (emailAddress) {
+    const startDomain = emailAddress.indexOf("@");
+    const domain = emailAddress.slice(startDomain + 1); // deze heb ik laten staan ivm leesbaarheid ipv meteen te returnen
+    return domain;
+}
 
+console.log(getEmailDomain("n.eeken@novi-education.nl"));
+console.log(getEmailDomain("t.mellink@novi.nl"));
+console.log(getEmailDomain("a.wiersma@outlook.com"));
 
 
 /* Opdracht  2 */
 // Schrijf een functie genaamd typeOfEmail, die een emailadres verwacht. De functie checkt of het emailadres een novi domein heeft (medewerker), een novi-education domein (student), of extern domein (zoals gmail of outlook)
 // ---- Verwachte uitkomsten:
 // typeOfEmail("n.eeken@novi-education.nl") geeft "Student"
-// typeOfEmail("t.mellink@novi.nl") geeft geeft "Medewerker"
+// typeOfEmail("t.mellink@novi.nl") geeft "Medewerker"
 // typeOfEmail("novi.nlaapjesk@outlook.com") geeft geeft "Extern" <-- deze moet het ook doen!
 // typeOfEmail("a.wiersma@outlook.com") geeft "Extern"
 
 
+// --- Oplossing met gebruik van functie opdracht 1 ---
+
+function typeOfEmail(emailAddress) {
+    const domain = getEmailDomain(emailAddress);
+
+    switch (domain) {
+        case "novi-education.nl":
+            return "Student";
+        case "novi.nl":
+            return "Medewerker";
+        default:
+            return "Extern";
+    }
+}
+console.log(typeOfEmail("n.eeken@novi-education.nl"));
+console.log(typeOfEmail("t.mellink@novi.nl"));
+console.log(typeOfEmail("novi.nlaapjesk@outlook.com"));
+console.log(typeOfEmail("a.wiersma@outlook.com"));
+
+
+// --- Oplossing zonder functie van opdracht 1 ---
+
+// function typeOfEmail(emailAddress) {
+//     if (emailAddress.includes("@novi-education.nl")) {
+//         return "Student";
+//     } else if (emailAddress.includes("@novi.nl")) {
+//         return "Medewerker";
+//     } else {
+//         return "Extern";
+//     }
+// }
+//
+// console.log(typeOfEmail("n.eeken@novi-education.nl"));
+// console.log(typeOfEmail("t.mellink@novi.nl"));
+// console.log(typeOfEmail("novi.nlaapjesk@outlook.com"));
+// console.log(typeOfEmail("a.wiersma@outlook.com"));
 
 /* Opdracht  3 */
 // Schrijf een functie genaamd checkEmailValidity, die een emailadres verwacht en checkt of het emailadres valide is. De functie returned true of false, afhankelijk van de uitkomst.
@@ -34,3 +78,26 @@
 // checkEmailValidity("n.eekenanovi.nl") geeft false - want geen @
 // checkEmailValidity("n.eeken@novinl.") geeft false - want de punt mag niet als laatst
 // checkEmailValidity("tessmellink@novi,nl") geeft false - want er staat een komma in
+
+function checkEmailValidity(emailAddress){
+
+    const hasAtSign = emailAddress.includes("@");
+    const dotIndex = emailAddress.lastIndexOf(".");
+    const hasComma = emailAddress.includes(",");
+
+    if (!hasAtSign) {
+        return false;
+    } else if (hasComma) {
+        return false
+    } else if (dotIndex === emailAddress.length -1) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+console.log(checkEmailValidity("n.eeken@novi.nl")); // Output: true
+console.log(checkEmailValidity("tessmellink@novi.nl")); // Output: true
+console.log(checkEmailValidity("n.eekenanovi.nl")); // Output: false
+console.log(checkEmailValidity("n.eeken@novinl.")); // Output: false
+console.log(checkEmailValidity("tessmellink@novi,nl")); // Output: false
